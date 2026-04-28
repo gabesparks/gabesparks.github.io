@@ -806,7 +806,7 @@
                 <span class="tool-pill">Zero dependencies</span>
               </div>
               <div class="deck-card-footer">
-                <span class="deck-card-hint">Scroll to flip &darr;</span>
+                <span class="deck-card-hint">Click to open &rarr;</span>
                 <span class="deck-card-link">view repo &rarr;</span>
               </div>
             </div>
@@ -824,7 +824,7 @@
                 <span class="tool-pill">People Tech</span>
               </div>
               <div class="deck-card-footer">
-                <span class="deck-card-hint">Scroll to flip &darr;</span>
+                <span class="deck-card-hint">Click to open &rarr;</span>
                 <span class="deck-card-link">view repo &rarr;</span>
               </div>
             </div>
@@ -842,7 +842,7 @@
                 <span class="tool-pill">Crypto Native</span>
               </div>
               <div class="deck-card-footer">
-                <span class="deck-card-hint">Scroll to flip &darr;</span>
+                <span class="deck-card-hint">Click to open &rarr;</span>
                 <span class="deck-card-link">view repo &rarr;</span>
               </div>
             </div>
@@ -851,11 +851,13 @@
         </div>
 
         <div class="deck-controls">
+          <button class="deck-btn deck-prev" aria-label="Previous">&#8592;</button>
           <div class="deck-dots">
             <span class="deck-dot active"></span>
             <span class="deck-dot"></span>
             <span class="deck-dot"></span>
           </div>
+          <button class="deck-btn deck-next" aria-label="Next">&#8594;</button>
         </div><!-- /deck-controls -->
       </div><!-- /deck-scene -->
     </section>
@@ -1173,20 +1175,9 @@
       // Init
       applyStates(0);
 
-      // Click front card to flip
+      // Single click front card — open repo in new tab
       cards.forEach(card => {
         card.addEventListener('click', (e) => {
-          if (card.dataset.state === 'front') {
-            // If it's a single click (not a drag), check if we should navigate or flip
-            // Small delay to distinguish intent — flip on click
-            flipNext();
-          }
-        });
-      });
-
-      // Double-click front card to open repo
-      cards.forEach(card => {
-        card.addEventListener('dblclick', (e) => {
           if (card.dataset.state === 'front') {
             window.open(card.dataset.href, '_blank');
           }
