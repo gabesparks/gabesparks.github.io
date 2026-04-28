@@ -494,13 +494,28 @@
     }
 
     /* ── Card deck ── */
-    .deck-section-sticky {
+    /* Tall scroll container — the natural scroll approach */
+    .deck-scroll-container {
       position: relative;
+      /* 100vh per card plus breathing room */
+      height: 380vh;
     }
 
-    .deck-sticky-inner {
+    .deck-sticky-viewport {
       position: sticky;
-      top: 80px;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 0 40px;
+      overflow: hidden;
+    }
+
+    .deck-sticky-viewport .wrapper {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 2rem;
     }
 
     .deck-scene {
@@ -713,11 +728,6 @@
       transform: scale(1.3);
     }
 
-    /* ── Deck scroll spacer ── */
-    .deck-scroll-spacer {
-      height: 0vh;
-    }
-
     /* ── Typewriter cursor ── */
     .cursor {
       display: inline-block;
@@ -777,19 +787,19 @@
   </div>
 
   <!-- Work -->
-  <div class="wrapper" id="work">
-    <section>
-      <p class="section-label reveal">Selected Work</p>
-      <h2 class="section-title reveal">Things I've built.</h2>
-      <p class="section-desc reveal">
-        A sourcing toolkit and two methodology guides built to show what's possible
-        when recruiters think like engineers.
-      </p>
-
-      <!-- Card deck -->
-      <div class="deck-section-sticky">
-      <div class="deck-sticky-inner">
-      <div class="deck-scene reveal" id="deck-scene">
+  <div id="work">
+    <div class="deck-scroll-container">
+      <div class="deck-sticky-viewport">
+        <div class="wrapper">
+          <p class="section-label reveal">Selected Work</p>
+          <h2 class="section-title reveal">Things I've built.</h2>
+          <p class="section-desc reveal">
+            A sourcing toolkit and two methodology guides built to show what's possible
+            when recruiters think like engineers.
+          </p>
+        </div>
+        <div class="deck-scene" id="deck-scene">
+          <div class="deck-stage-wrap">
         <div class="deck-stage">
 
           <div class="deck-card" data-index="0" data-href="https://github.com/gabesparks/github-npm-sourcing-guide">
@@ -1028,16 +1038,16 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // ── Scroll-lock deck flip ──
+    // ── Scroll-progress deck flip (no scroll hijacking) ──
     (function() {
-      const CARDS_COUNT = 3;
-      const FLIP_MS = 800;
-      let locked = false;
-      let flipping = false;
-      let savedScrollY = 0;
-      let deckInView = false;
+      const container = document.getElementById('work');
+      if (!container) return;
 
-      // ── State reader ──
+      const CARDS_COUNT = 3;
+      // Each card occupies 1/CARDS_COUNT of the scroll container height
+      // We flip when crossing each threshold
+      let lastFlipIndex = -1;
+
       function getFront() {
         const cards = document.querySelectorAll('.deck-card');
         for (let i = 0; i < cards.length; i++) {
@@ -1046,129 +1056,81 @@
         return 0;
       }
 
-      // ── Hard body lock ──
-      function lock() {
-        if (locked) return;
-        locked = true;
-        savedScrollY = window.scrollY;
-        document.body.style.top = `-${savedScrollY}px`;
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-        document.body.style.overflowY = 'scroll'; // keep scrollbar visible to avoid layout shift
-      }
+      function flipTo(targetIndex) {
+        const current = getFront();
+        if (targetIndex === current) return;
 
-      function unlock() {
-        if (!locked) return;
-        locked = false;
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        document.body.style.overflowY = '';
-        window.scrollTo({ top: savedScrollY, behavior: 'instant' });
-      }
-
-      // ── Flip actions ──
-      function flipNext() {
-        if (flipping) return;
-        flipping = true;
-        const front = document.querySelector('.deck-card[data-state="front"]');
-        if (front) front.click();
-        setTimeout(() => {
-          flipping = false;
-          // After flipping to last card wait briefly then unlock downward
-          if (getFront() === CARDS_COUNT - 1) {
-            setTimeout(unlock, 500);
+        // Use the deck's existing click/keyboard handlers
+        if (targetIndex > current) {
+          // Flip forward
+          const steps = targetIndex - current;
+          let step = 0;
+          function doStep() {
+            if (step >= steps) return;
+            step++;
+            const front = document.querySelector('.deck-card[data-state="front"]');
+            if (front) front.click();
+            setTimeout(doStep, 820);
           }
-        }, FLIP_MS);
+          doStep();
+        } else {
+          // Flip backward
+          const steps = current - targetIndex;
+          let step = 0;
+          function doStepBack() {
+            if (step >= steps) return;
+            step++;
+            document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+            setTimeout(doStepBack, 820);
+          }
+          doStepBack();
+        }
       }
 
-      function flipPrev() {
-        if (flipping) return;
-        flipping = true;
-        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
-        setTimeout(() => {
-          flipping = false;
-          // After flipping back to first card wait briefly then unlock upward
-          if (getFront() === 0) {
-            setTimeout(unlock, 500);
-          }
-        }, FLIP_MS);
-      }
-
-      // ── IntersectionObserver — most reliable way to know deck is on screen ──
-      const sentinel = document.getElementById('work');
-      if (!sentinel) return;
-
-      const deckObserver = new IntersectionObserver((entries) => {
-        entries.forEach(e => { deckInView = e.isIntersecting; });
-      }, {
-        // Fire when at least 40% of the work section is visible
-        threshold: 0.4,
-      });
-      deckObserver.observe(sentinel);
-
-      // ── Wheel — always passive:false so we can always preventDefault ──
-      window.addEventListener('wheel', (e) => {
-        // If not in view at all, do nothing
-        if (!deckInView) return;
-
-        const front = getFront();
-
-        // Engage lock: scrolling down, first card showing, not yet locked
-        if (!locked && e.deltaY > 0 && front === 0) {
-          e.preventDefault();
-          lock();
-          flipNext();
-          return;
-        }
-
-        // Engage lock: scrolling up, last card showing, not yet locked
-        if (!locked && e.deltaY < 0 && front === CARDS_COUNT - 1) {
-          e.preventDefault();
-          lock();
-          flipPrev();
-          return;
-        }
-
-        // Already locked — intercept everything
-        if (locked) {
-          e.preventDefault();
-          if (e.deltaY > 0) {
-            if (front < CARDS_COUNT - 1) {
-              flipNext();
-            } else {
-              unlock(); // last card, let them continue
-            }
-          } else if (e.deltaY < 0) {
-            if (front > 0) {
-              flipPrev();
-            } else {
-              unlock(); // first card, let them continue up
-            }
-          }
-        }
-      }, { passive: false });
-
-      // ── Re-lock if they scroll back mid-deck ──
       window.addEventListener('scroll', () => {
-        if (locked || !deckInView) return;
-        const front = getFront();
-        if (front > 0 && front < CARDS_COUNT - 1) {
-          lock();
+        const rect = container.getBoundingClientRect();
+        const containerHeight = container.offsetHeight;
+        const viewportH = window.innerHeight;
+
+        // progress: 0 when container top hits viewport top, 1 when container bottom leaves viewport
+        const scrolled = -rect.top;
+        const scrollable = containerHeight - viewportH;
+        if (scrollable <= 0) return;
+
+        const progress = Math.max(0, Math.min(1, scrolled / scrollable));
+
+        // Map progress to card index
+        // 0.0 - 0.33 = card 0, 0.33 - 0.66 = card 1, 0.66 - 1.0 = card 2
+        let targetCard;
+        if (progress < 0.33) targetCard = 0;
+        else if (progress < 0.66) targetCard = 1;
+        else targetCard = 2;
+
+        if (targetCard !== lastFlipIndex) {
+          lastFlipIndex = targetCard;
+          flipTo(targetCard);
         }
       }, { passive: true });
 
-      // ── Touch swipe ──
+      // Touch swipe still works as before
       let ty0 = 0;
-      window.addEventListener('touchstart', e => { ty0 = e.touches[0].clientY; }, { passive: true });
-      window.addEventListener('touchend', e => {
-        if (!deckInView) return;
-        const diff = ty0 - e.changedTouches[0].clientY;
-        if (Math.abs(diff) > 60) {
-          if (diff > 0 && getFront() < CARDS_COUNT - 1) flipNext();
-          if (diff < 0 && getFront() > 0) flipPrev();
-        }
-      }, { passive: true });
+      const stage = document.querySelector('.deck-stage');
+      if (stage) {
+        stage.addEventListener('touchstart', e => { ty0 = e.touches[0].clientY; }, { passive: true });
+        stage.addEventListener('touchend', e => {
+          const diff = ty0 - e.changedTouches[0].clientY;
+          if (Math.abs(diff) > 60) {
+            const front = getFront();
+            if (diff > 0 && front < CARDS_COUNT - 1) {
+              const f = document.querySelector('.deck-card[data-state="front"]');
+              if (f) f.click();
+            }
+            if (diff < 0 && front > 0) {
+              document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+            }
+          }
+        });
+      }
 
     })();
 
