@@ -493,6 +493,221 @@
       .nav-links { display: none; }
     }
 
+    /* ── Card deck ── */
+    .deck-scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+      padding: 2rem 0 1rem;
+    }
+
+    .deck-stage {
+      position: relative;
+      width: 100%;
+      max-width: 580px;
+      height: 420px;
+      perspective: 1200px;
+    }
+
+    .deck-card {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      cursor: pointer;
+      transform-origin: center bottom;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  opacity 0.5s ease,
+                  box-shadow 0.3s ease;
+      will-change: transform;
+      user-select: none;
+    }
+
+    /* Stack offsets for cards behind */
+    .deck-card[data-state="behind-1"] {
+      transform: translateY(-10px) translateX(6px) scale(0.96) rotateZ(2deg);
+      opacity: 0.7;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .deck-card[data-state="behind-2"] {
+      transform: translateY(-18px) translateX(12px) scale(0.92) rotateZ(4deg);
+      opacity: 0.45;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .deck-card[data-state="front"] {
+      transform: translateY(0) translateX(0) scale(1) rotateZ(0deg);
+      opacity: 1;
+      z-index: 3;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--border-2);
+    }
+
+    .deck-card[data-state="flying"] {
+      transform: translateX(140%) translateY(-60px) rotateZ(20deg) scale(0.85);
+      opacity: 0;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .deck-card[data-state="returning"] {
+      transform: translateY(-18px) translateX(12px) scale(0.92) rotateZ(4deg);
+      opacity: 0;
+      z-index: 0;
+      pointer-events: none;
+      transition: none;
+    }
+
+    .deck-card-inner {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 16px;
+      padding: 2.25rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .deck-card-inner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .deck-card[data-state="front"] .deck-card-inner::before {
+      opacity: 1;
+    }
+
+    .deck-card-number {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+    }
+
+    .deck-card-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(31, 122, 70, 0.25);
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+      width: fit-content;
+    }
+
+    .deck-card-title {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      line-height: 1.2;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .deck-card-desc {
+      font-size: 0.875rem;
+      color: var(--text-2);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .deck-card-pills {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .deck-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .deck-card-hint {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-3);
+    }
+
+    .deck-card-link {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .deck-card[data-state="front"]:hover .deck-card-link {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .deck-card[data-state="front"]:hover .deck-card-hint {
+      opacity: 0;
+    }
+
+    /* Controls */
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .deck-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-2);
+      background: var(--bg-2);
+      color: var(--text-2);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .deck-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .deck-dots {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .deck-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border-2);
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .deck-dot.active {
+      background: var(--accent);
+      transform: scale(1.3);
+    }
+
     /* ── Typewriter cursor ── */
     .cursor {
       display: inline-block;
@@ -561,63 +776,76 @@
         when recruiters think like engineers.
       </p>
 
-      <div class="projects reveal">
+      <!-- Card deck -->
+      <div class="deck-scene reveal">
+        <div class="deck-stage">
 
-        <a class="project-card" href="https://github.com/gabesparks/github-npm-sourcing-guide" target="_blank">
-          <div class="project-header">
-            <span class="project-name">github-npm-sourcing-guide</span>
-            <span class="project-tag">CLI Toolkit</span>
+          <div class="deck-card" data-index="0" data-href="https://github.com/gabesparks/github-npm-sourcing-guide">
+            <div class="deck-card-inner">
+              <div class="deck-card-number">01</div>
+              <div class="deck-card-tag">CLI Toolkit</div>
+              <h3 class="deck-card-title">GitHub &amp; NPM<br>Sourcing Toolkit</h3>
+              <p class="deck-card-desc">Four CLI tools that work individually or together as a full sourcing pipeline. Find high-signal repos, pull top contributors, deep-evaluate profiles, and generate a ranked outreach shortlist. One command from stack to shortlist.</p>
+              <div class="deck-card-pills">
+                <span class="tool-pill">Node.js</span>
+                <span class="tool-pill">GitHub API</span>
+                <span class="tool-pill">NPM Registry</span>
+                <span class="tool-pill">Zero dependencies</span>
+              </div>
+              <div class="deck-card-footer">
+                <span class="deck-card-hint">Click to flip &rarr;</span>
+                <span class="deck-card-link">view repo &rarr;</span>
+              </div>
+            </div>
           </div>
-          <p class="project-desc">
-            Four CLI tools that work individually or together as a full sourcing pipeline.
-            Find high-signal repos by tech stack, pull top contributors, deep-evaluate profiles,
-            and generate a ranked outreach shortlist. One command from stack to shortlist.
-          </p>
-          <div class="project-tools">
-            <span class="tool-pill">Node.js</span>
-            <span class="tool-pill">GitHub API</span>
-            <span class="tool-pill">NPM Registry</span>
-            <span class="tool-pill">Zero dependencies</span>
-          </div>
-          <span class="project-arrow">view repo →</span>
-        </a>
 
-        <a class="project-card" href="https://github.com/gabesparks/github-sourcing-playbook" target="_blank">
-          <div class="project-header">
-            <span class="project-name">github-sourcing-playbook</span>
-            <span class="project-tag">Methodology</span>
+          <div class="deck-card" data-index="1" data-href="https://github.com/gabesparks/github-sourcing-playbook">
+            <div class="deck-card-inner">
+              <div class="deck-card-number">02</div>
+              <div class="deck-card-tag">Methodology</div>
+              <h3 class="deck-card-title">GitHub Sourcing<br>Playbook</h3>
+              <p class="deck-card-desc">A structured sourcing methodology for finding and evaluating engineering talent on GitHub. Two paths: a fast pipeline using the CLI toolkit, or a step-by-step targeted approach covering repo discovery, evaluation, and outreach.</p>
+              <div class="deck-card-pills">
+                <span class="tool-pill">Technical Sourcing</span>
+                <span class="tool-pill">GitHub</span>
+                <span class="tool-pill">People Tech</span>
+              </div>
+              <div class="deck-card-footer">
+                <span class="deck-card-hint">Click to flip &rarr;</span>
+                <span class="deck-card-link">view repo &rarr;</span>
+              </div>
+            </div>
           </div>
-          <p class="project-desc">
-            A structured sourcing methodology for finding and evaluating engineering talent on GitHub.
-            Two paths: a fast pipeline using the CLI toolkit, or a step-by-step targeted approach.
-            Covers repo discovery, contributor evaluation, profile scoring, and outreach.
-          </p>
-          <div class="project-tools">
-            <span class="tool-pill">Technical Sourcing</span>
-            <span class="tool-pill">GitHub</span>
-            <span class="tool-pill">People Tech</span>
-          </div>
-          <span class="project-arrow">view repo →</span>
-        </a>
 
-        <a class="project-card" href="https://github.com/gabesparks/twitter-x-sourcing-playbook" target="_blank">
-          <div class="project-header">
-            <span class="project-name">twitter-x-sourcing-playbook</span>
-            <span class="project-tag">Methodology</span>
+          <div class="deck-card" data-index="2" data-href="https://github.com/gabesparks/twitter-x-sourcing-playbook">
+            <div class="deck-card-inner">
+              <div class="deck-card-number">03</div>
+              <div class="deck-card-tag">Methodology</div>
+              <h3 class="deck-card-title">Twitter/X Sourcing<br>Playbook</h3>
+              <p class="deck-card-desc">A sourcing playbook for finding crypto-native and technical developers on Twitter/X. Covers advanced search strategies, network mapping, community and event tracking, and outreach best practices tailored to the platform.</p>
+              <div class="deck-card-pills">
+                <span class="tool-pill">Web3 Sourcing</span>
+                <span class="tool-pill">Twitter/X</span>
+                <span class="tool-pill">Crypto Native</span>
+              </div>
+              <div class="deck-card-footer">
+                <span class="deck-card-hint">Click to flip &rarr;</span>
+                <span class="deck-card-link">view repo &rarr;</span>
+              </div>
+            </div>
           </div>
-          <p class="project-desc">
-            A sourcing playbook for finding crypto-native and technical developers on Twitter/X.
-            Covers advanced search strategies, network mapping, community and event tracking,
-            and outreach best practices for a platform that requires a different approach entirely.
-          </p>
-          <div class="project-tools">
-            <span class="tool-pill">Web3 Sourcing</span>
-            <span class="tool-pill">Twitter/X</span>
-            <span class="tool-pill">Crypto Native</span>
-          </div>
-          <span class="project-arrow">view repo →</span>
-        </a>
 
+        </div>
+
+        <div class="deck-controls">
+          <button class="deck-btn deck-prev" aria-label="Previous">&#8592;</button>
+          <div class="deck-dots">
+            <span class="deck-dot active"></span>
+            <span class="deck-dot"></span>
+            <span class="deck-dot"></span>
+          </div>
+          <button class="deck-btn deck-next" aria-label="Next">&#8594;</button>
+        </div>
       </div>
     </section>
   </div>
@@ -810,6 +1038,207 @@
       function update(now) {
         const elapsed = now - start;
         const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target;
+          el.classList.remove('counting');
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseInt(entry.target.dataset.count);
+          countUp(entry.target, target, 1200);
+          countObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
+
+    // ── 4. Card deck ──
+    (function() {
+      const cards = Array.from(document.querySelectorAll('.deck-card'));
+      const dots  = Array.from(document.querySelectorAll('.deck-dot'));
+      const total = cards.length;
+      let current = 0;
+      let animating = false;
+
+      // order: front, behind-1, behind-2
+      function getOrder(frontIndex) {
+        return [
+          frontIndex,
+          (frontIndex + 1) % total,
+          (frontIndex + 2) % total,
+        ];
+      }
+
+      function applyStates(frontIndex) {
+        const [f, b1, b2] = getOrder(frontIndex);
+        cards[f].dataset.state  = 'front';
+        cards[b1].dataset.state = 'behind-1';
+        cards[b2].dataset.state = 'behind-2';
+        dots.forEach((d, i) => d.classList.toggle('active', i === frontIndex));
+      }
+
+      function flipNext() {
+        if (animating) return;
+        animating = true;
+
+        const [f, b1, b2] = getOrder(current);
+
+        // 1. Fly current front card off to the right
+        cards[f].dataset.state = 'flying';
+
+        // 2. Shift the stack forward while front is flying
+        setTimeout(() => {
+          cards[b1].dataset.state = 'front';
+          cards[b2].dataset.state = 'behind-1';
+        }, 120);
+
+        // 3. After fly-out, instantly snap the old front to back position (no transition)
+        setTimeout(() => {
+          cards[f].dataset.state = 'returning';
+        }, 600);
+
+        // 4. Fade it back in as the new back card
+        setTimeout(() => {
+          cards[f].dataset.state = 'behind-2';
+          current = (current + 1) % total;
+          dots.forEach((d, i) => d.classList.toggle('active', i === current));
+          animating = false;
+        }, 750);
+      }
+
+      function flipPrev() {
+        if (animating) return;
+        animating = true;
+
+        const prev = (current - 1 + total) % total;
+        const [f, b1, b2] = getOrder(current);
+
+        // Snap prev card behind (no transition), then slide it to front
+        cards[prev].dataset.state = 'returning';
+
+        setTimeout(() => {
+          // Shift current stack back
+          cards[f].dataset.state  = 'behind-1';
+          cards[b1].dataset.state = 'behind-2';
+          // Bring prev to front
+          cards[prev].dataset.state = 'front';
+          current = prev;
+          dots.forEach((d, i) => d.classList.toggle('active', i === current));
+
+          setTimeout(() => { animating = false; }, 700);
+        }, 50);
+      }
+
+      // Init
+      applyStates(0);
+
+      // Click front card to flip
+      cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (card.dataset.state === 'front') {
+            // If it's a single click (not a drag), check if we should navigate or flip
+            // Small delay to distinguish intent — flip on click
+            flipNext();
+          }
+        });
+      });
+
+      // Double-click front card to open repo
+      cards.forEach(card => {
+        card.addEventListener('dblclick', (e) => {
+          if (card.dataset.state === 'front') {
+            window.open(card.dataset.href, '_blank');
+          }
+        });
+      });
+
+      // Buttons
+      document.querySelector('.deck-next').addEventListener('click', (e) => {
+        e.stopPropagation();
+        flipNext();
+      });
+      document.querySelector('.deck-prev').addEventListener('click', (e) => {
+        e.stopPropagation();
+        flipPrev();
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') flipNext();
+        if (e.key === 'ArrowLeft')  flipPrev();
+      });
+
+      // Touch/swipe support
+      let touchStartX = 0;
+      const stage = document.querySelector('.deck-stage');
+      stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+      stage.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) {
+          diff > 0 ? flipNext() : flipPrev();
+        }
+      });
+    })();
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ── 2. Typewriter effect ──
+    const lines = [
+      'Senior Talent Partner',
+      'Building recruiting infrastructure.',
+      '4 CLI tools. 0 dependencies.',
+      'Sourcing smarter, not harder.',
+      'Open to new opportunities.',
+    ];
+    const el = document.getElementById('typewriter');
+    let lineIndex = 0, charIndex = 0, deleting = false;
+
+    function type() {
+      const current = lines[lineIndex];
+      if (!deleting) {
+        el.textContent = current.slice(0, ++charIndex);
+        if (charIndex === current.length) {
+          deleting = true;
+          setTimeout(type, 1800);
+          return;
+        }
+        setTimeout(type, 55);
+      } else {
+        el.textContent = current.slice(0, --charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          lineIndex = (lineIndex + 1) % lines.length;
+          setTimeout(type, 400);
+          return;
+        }
+        setTimeout(type, 28);
+      }
+    }
+    setTimeout(type, 600);
+
+    // ── 3. Count-up animation ──
+    function countUp(el, target, duration) {
+      const start = performance.now();
+      el.classList.add('counting');
+      function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
         // Ease out cubic
         const eased = 1 - Math.pow(1 - progress, 3);
         el.textContent = Math.round(eased * target);
@@ -834,27 +1263,6 @@
     }, { threshold: 0.5 });
     document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
 
-    // ── 4. 3D card tilt on hover ──
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -4;
-        const rotateY = ((x - centerX) / centerX) * 4;
-        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(4px)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0)';
-        card.style.transition = 'transform 0.4s ease';
-        setTimeout(() => card.style.transition = '', 400);
-      });
-      card.addEventListener('mouseenter', () => {
-        card.style.transition = 'transform 0.1s ease';
-      });
-    });
   </script>
 
 </body>
