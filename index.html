@@ -494,12 +494,36 @@
     }
 
     /* ── Card deck ── */
+    .deck-section-sticky {
+      position: relative;
+    }
+
+    .deck-sticky-inner {
+      position: sticky;
+      top: 80px;
+    }
+
     .deck-scene {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 2.5rem;
       padding: 2rem 0 1rem;
+    }
+
+    .deck-scroll-hint {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-3);
+      text-align: center;
+      margin-top: -1rem;
+      letter-spacing: 0.08em;
+      animation: hintFade 2s ease-in-out infinite;
+    }
+
+    @keyframes hintFade {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
     }
 
     .deck-stage {
@@ -708,6 +732,11 @@
       transform: scale(1.3);
     }
 
+    /* ── Deck scroll spacer ── */
+    .deck-scroll-spacer {
+      height: 0vh;
+    }
+
     /* ── Typewriter cursor ── */
     .cursor {
       display: inline-block;
@@ -777,7 +806,9 @@
       </p>
 
       <!-- Card deck -->
-      <div class="deck-scene reveal">
+      <div class="deck-section-sticky">
+      <div class="deck-sticky-inner">
+      <div class="deck-scene reveal" id="deck-scene">
         <div class="deck-stage">
 
           <div class="deck-card" data-index="0" data-href="https://github.com/gabesparks/github-npm-sourcing-guide">
@@ -953,6 +984,26 @@
             <li>AI-assisted Hiring</li>
           </ul>
         </div>
+        <div class="skill-block">
+          <p class="skill-block-title">Recruiting Tech</p>
+          <ul class="skill-list">
+            <li>Greenhouse</li>
+            <li>Workable</li>
+            <li>Guide</li>
+            <li>Metaview</li>
+            <li>LinkedIn Talent Insights</li>
+          </ul>
+        </div>
+        <div class="skill-block">
+          <p class="skill-block-title">Data & Analytics</p>
+          <ul class="skill-list">
+            <li>Pipeline Analytics</li>
+            <li>Funnel Metrics</li>
+            <li>Conversion Rates</li>
+            <li>Reporting & Dashboards</li>
+            <li>Data Integrity</li>
+          </ul>
+        </div>
       </div>
     </section>
   </div>
@@ -996,6 +1047,66 @@
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ── Scroll-driven deck flip ──
+    (function() {
+      const workSection = document.getElementById('work');
+      if (!workSection) return;
+
+      const CARDS_COUNT = 3;
+      let lastScrolled = -1;
+      let isScrollLocked = false;
+      let scrollAccum = 0;
+      const SCROLL_THRESHOLD = 120; // px of scroll to trigger a flip
+
+      function getCurrentFrontIndex() {
+        const cards = document.querySelectorAll('.deck-card');
+        for (let i = 0; i < cards.length; i++) {
+          if (cards[i].dataset.state === 'front') return parseInt(cards[i].dataset.index);
+        }
+        return 0;
+      }
+
+      function isSectionInView() {
+        const rect = workSection.getBoundingClientRect();
+        const vh = window.innerHeight;
+        // Section is "in view" when its top is near the top of viewport
+        return rect.top <= 100 && rect.bottom >= vh * 0.4;
+      }
+
+      window.addEventListener('wheel', (e) => {
+        if (!isSectionInView()) return;
+
+        const frontIndex = getCurrentFrontIndex();
+
+        // Scrolling down and not on last card — intercept
+        if (e.deltaY > 0 && frontIndex < CARDS_COUNT - 1) {
+          e.preventDefault();
+          scrollAccum += e.deltaY;
+          if (scrollAccum >= SCROLL_THRESHOLD) {
+            scrollAccum = 0;
+            // Trigger next flip via the deck's flipNext
+            document.querySelector('.deck-next').click();
+          }
+          return;
+        }
+
+        // Scrolling up and not on first card — intercept
+        if (e.deltaY < 0 && frontIndex > 0) {
+          e.preventDefault();
+          scrollAccum += e.deltaY;
+          if (scrollAccum <= -SCROLL_THRESHOLD) {
+            scrollAccum = 0;
+            document.querySelector('.deck-prev').click();
+          }
+          return;
+        }
+
+        // On last card scrolling down or first card scrolling up — let scroll through
+        scrollAccum = 0;
+      }, { passive: false });
+
+    })();
 
     // ── 2. Typewriter effect ──
     const lines = [
