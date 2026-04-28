@@ -494,30 +494,6 @@
     }
 
     /* ── Card deck ── */
-    /* Tall scroll container — the natural scroll approach */
-    .deck-scroll-container {
-      position: relative;
-      /* 100vh per card plus breathing room */
-      height: 380vh;
-    }
-
-    .deck-sticky-viewport {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 80px 0 40px;
-      overflow: hidden;
-    }
-
-    .deck-sticky-viewport .wrapper {
-      position: relative;
-      z-index: 1;
-      margin-bottom: 2rem;
-    }
-
     .deck-scene {
       display: flex;
       flex-direction: column;
@@ -705,9 +681,28 @@
     .deck-controls {
       display: flex;
       align-items: center;
+      gap: 1.5rem;
+    }
+
+    .deck-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-2);
+      background: var(--bg-2);
+      color: var(--text-2);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 1rem;
-      flex-direction: column;
+      transition: all 0.2s;
+    }
+
+    .deck-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
     }
 
     .deck-dots {
@@ -1038,100 +1033,104 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // ── Scroll-progress deck flip (no scroll hijacking) ──
+    // ── 4. Card deck ──
     (function() {
-      const container = document.getElementById('work');
-      if (!container) return;
+      const cards = Array.from(document.querySelectorAll('.deck-card'));
+      const dots  = Array.from(document.querySelectorAll('.deck-dot'));
+      const total = cards.length;
+      let current = 0;
+      let animating = false;
 
-      const CARDS_COUNT = 3;
-      // Each card occupies 1/CARDS_COUNT of the scroll container height
-      // We flip when crossing each threshold
-      let lastFlipIndex = -1;
-
-      function getFront() {
-        const cards = document.querySelectorAll('.deck-card');
-        for (let i = 0; i < cards.length; i++) {
-          if (cards[i].dataset.state === 'front') return parseInt(cards[i].dataset.index);
-        }
-        return 0;
+      function getOrder(frontIndex) {
+        return [
+          frontIndex,
+          (frontIndex + 1) % total,
+          (frontIndex + 2) % total,
+        ];
       }
 
-      function flipTo(targetIndex) {
-        const current = getFront();
-        if (targetIndex === current) return;
-
-        // Use the deck's existing click/keyboard handlers
-        if (targetIndex > current) {
-          // Flip forward
-          const steps = targetIndex - current;
-          let step = 0;
-          function doStep() {
-            if (step >= steps) return;
-            step++;
-            const front = document.querySelector('.deck-card[data-state="front"]');
-            if (front) front.click();
-            setTimeout(doStep, 820);
-          }
-          doStep();
-        } else {
-          // Flip backward
-          const steps = current - targetIndex;
-          let step = 0;
-          function doStepBack() {
-            if (step >= steps) return;
-            step++;
-            document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
-            setTimeout(doStepBack, 820);
-          }
-          doStepBack();
-        }
+      function applyStates(frontIndex) {
+        const [f, b1, b2] = getOrder(frontIndex);
+        cards[f].dataset.state  = 'front';
+        cards[b1].dataset.state = 'behind-1';
+        cards[b2].dataset.state = 'behind-2';
+        dots.forEach((d, i) => d.classList.toggle('active', i === frontIndex));
       }
 
-      window.addEventListener('scroll', () => {
-        const rect = container.getBoundingClientRect();
-        const containerHeight = container.offsetHeight;
-        const viewportH = window.innerHeight;
+      function flipNext() {
+        if (animating) return;
+        animating = true;
+        const [f, b1, b2] = getOrder(current);
+        cards[f].dataset.state = 'flying';
+        setTimeout(() => {
+          cards[b1].dataset.state = 'front';
+          cards[b2].dataset.state = 'behind-1';
+        }, 120);
+        setTimeout(() => { cards[f].dataset.state = 'returning'; }, 600);
+        setTimeout(() => {
+          cards[f].dataset.state = 'behind-2';
+          current = (current + 1) % total;
+          dots.forEach((d, i) => d.classList.toggle('active', i === current));
+          animating = false;
+        }, 750);
+      }
 
-        // progress: 0 when container top hits viewport top, 1 when container bottom leaves viewport
-        const scrolled = -rect.top;
-        const scrollable = containerHeight - viewportH;
-        if (scrollable <= 0) return;
+      function flipPrev() {
+        if (animating) return;
+        animating = true;
+        const prev = (current - 1 + total) % total;
+        const [f, b1, b2] = getOrder(current);
+        cards[prev].dataset.state = 'returning';
+        setTimeout(() => {
+          cards[f].dataset.state  = 'behind-1';
+          cards[b1].dataset.state = 'behind-2';
+          cards[prev].dataset.state = 'front';
+          current = prev;
+          dots.forEach((d, i) => d.classList.toggle('active', i === current));
+          setTimeout(() => { animating = false; }, 700);
+        }, 50);
+      }
 
-        const progress = Math.max(0, Math.min(1, scrolled / scrollable));
+      applyStates(0);
 
-        // Map progress to card index
-        // 0.0 - 0.33 = card 0, 0.33 - 0.66 = card 1, 0.66 - 1.0 = card 2
-        let targetCard;
-        if (progress < 0.33) targetCard = 0;
-        else if (progress < 0.66) targetCard = 1;
-        else targetCard = 2;
+      // Click front card to flip
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          if (card.dataset.state === 'front') flipNext();
+        });
+      });
 
-        if (targetCard !== lastFlipIndex) {
-          lastFlipIndex = targetCard;
-          flipTo(targetCard);
-        }
-      }, { passive: true });
+      // Double-click to open repo
+      cards.forEach(card => {
+        card.addEventListener('dblclick', () => {
+          if (card.dataset.state === 'front') window.open(card.dataset.href, '_blank');
+        });
+      });
 
-      // Touch swipe still works as before
-      let ty0 = 0;
+      // Arrow buttons
+      const nextBtn = document.querySelector('.deck-next');
+      const prevBtn = document.querySelector('.deck-prev');
+      if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); flipNext(); });
+      if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); flipPrev(); });
+
+      // Keyboard
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') flipNext();
+        if (e.key === 'ArrowLeft')  flipPrev();
+      });
+
+      // Touch swipe
+      let touchStartX = 0;
       const stage = document.querySelector('.deck-stage');
       if (stage) {
-        stage.addEventListener('touchstart', e => { ty0 = e.touches[0].clientY; }, { passive: true });
+        stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
         stage.addEventListener('touchend', e => {
-          const diff = ty0 - e.changedTouches[0].clientY;
-          if (Math.abs(diff) > 60) {
-            const front = getFront();
-            if (diff > 0 && front < CARDS_COUNT - 1) {
-              const f = document.querySelector('.deck-card[data-state="front"]');
-              if (f) f.click();
-            }
-            if (diff < 0 && front > 0) {
-              document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
-            }
+          const diff = touchStartX - e.changedTouches[0].clientX;
+          if (Math.abs(diff) > 40) {
+            diff > 0 ? flipNext() : flipPrev();
           }
         });
       }
-
     })();
 
     // ── 2. Typewriter effect ──
