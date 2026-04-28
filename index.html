@@ -690,28 +690,9 @@
     .deck-controls {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
-    }
-
-    .deck-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid var(--border-2);
-      background: var(--bg-2);
-      color: var(--text-2);
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .deck-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-dim);
+      gap: 1rem;
+      flex-direction: column;
     }
 
     .deck-dots {
@@ -824,7 +805,7 @@
                 <span class="tool-pill">Zero dependencies</span>
               </div>
               <div class="deck-card-footer">
-                <span class="deck-card-hint">Click to flip &rarr;</span>
+                <span class="deck-card-hint">Scroll to flip &darr;</span>
                 <span class="deck-card-link">view repo &rarr;</span>
               </div>
             </div>
@@ -842,7 +823,7 @@
                 <span class="tool-pill">People Tech</span>
               </div>
               <div class="deck-card-footer">
-                <span class="deck-card-hint">Click to flip &rarr;</span>
+                <span class="deck-card-hint">Scroll to flip &darr;</span>
                 <span class="deck-card-link">view repo &rarr;</span>
               </div>
             </div>
@@ -860,7 +841,7 @@
                 <span class="tool-pill">Crypto Native</span>
               </div>
               <div class="deck-card-footer">
-                <span class="deck-card-hint">Click to flip &rarr;</span>
+                <span class="deck-card-hint">Scroll to flip &darr;</span>
                 <span class="deck-card-link">view repo &rarr;</span>
               </div>
             </div>
@@ -869,13 +850,12 @@
         </div>
 
         <div class="deck-controls">
-          <button class="deck-btn deck-prev" aria-label="Previous">&#8592;</button>
           <div class="deck-dots">
             <span class="deck-dot active"></span>
             <span class="deck-dot"></span>
             <span class="deck-dot"></span>
           </div>
-          <button class="deck-btn deck-next" aria-label="Next">&#8594;</button>
+          <p class="deck-scroll-hint">Scroll to flip &darr;</p>
         </div>
       </div>
     </section>
@@ -1048,18 +1028,18 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // ── Scroll-driven deck flip ──
+    // ── Scroll-lock deck flip ──
     (function() {
       const workSection = document.getElementById('work');
       if (!workSection) return;
 
       const CARDS_COUNT = 3;
-      let lastScrolled = -1;
-      let isScrollLocked = false;
-      let scrollAccum = 0;
-      const SCROLL_THRESHOLD = 120; // px of scroll to trigger a flip
+      const FLIP_DURATION = 800; // ms — matches CSS transition
+      let locked = false;
+      let flipping = false;
 
-      function getCurrentFrontIndex() {
+      // ── Helpers ──
+      function getFrontIndex() {
         const cards = document.querySelectorAll('.deck-card');
         for (let i = 0; i < cards.length; i++) {
           if (cards[i].dataset.state === 'front') return parseInt(cards[i].dataset.index);
@@ -1067,44 +1047,128 @@
         return 0;
       }
 
-      function isSectionInView() {
-        const rect = workSection.getBoundingClientRect();
-        const vh = window.innerHeight;
-        // Section is "in view" when its top is near the top of viewport
-        return rect.top <= 100 && rect.bottom >= vh * 0.4;
+      function lockScroll() {
+        if (locked) return;
+        locked = true;
+        // Hard-freeze body scroll
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.top = `-${window.scrollY}px`;
       }
 
+      function unlockScroll(direction) {
+        if (!locked) return;
+        locked = false;
+        const scrollY = Math.abs(parseInt(document.body.style.top || '0'));
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.top = '';
+        window.scrollTo(0, scrollY);
+      }
+
+      function isInDeckZone() {
+        const rect = workSection.getBoundingClientRect();
+        const vh = window.innerHeight;
+        return rect.top <= 60 && rect.bottom >= vh * 0.6;
+      }
+
+      function triggerFlipNext() {
+        if (flipping) return;
+        flipping = true;
+        const front = document.querySelector('.deck-card[data-state="front"]');
+        if (front) front.click();
+        setTimeout(() => {
+          flipping = false;
+          const newFront = getFrontIndex();
+          // Unlock after last card — let user continue scrolling down
+          if (newFront === CARDS_COUNT - 1) {
+            setTimeout(() => unlockScroll('down'), 300);
+          }
+        }, FLIP_DURATION);
+      }
+
+      function triggerFlipPrev() {
+        if (flipping) return;
+        flipping = true;
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+        setTimeout(() => {
+          flipping = false;
+          const newFront = getFrontIndex();
+          // Unlock after first card — let user continue scrolling up
+          if (newFront === 0) {
+            setTimeout(() => unlockScroll('up'), 300);
+          }
+        }, FLIP_DURATION);
+      }
+
+      // ── Wheel handler ──
       window.addEventListener('wheel', (e) => {
-        if (!isSectionInView()) return;
+        const front = getFrontIndex();
 
-        const frontIndex = getCurrentFrontIndex();
-
-        // Scrolling down and not on last card — intercept
-        if (e.deltaY > 0 && frontIndex < CARDS_COUNT - 1) {
+        // Enter lock zone scrolling down onto card 0
+        if (!locked && e.deltaY > 0 && front === 0 && isInDeckZone()) {
+          lockScroll();
           e.preventDefault();
-          scrollAccum += e.deltaY;
-          if (scrollAccum >= SCROLL_THRESHOLD) {
-            scrollAccum = 0;
-            // Trigger next flip via the deck's flipNext
-            document.querySelector('.deck-next').click();
-          }
+          triggerFlipNext();
           return;
         }
 
-        // Scrolling up and not on first card — intercept
-        if (e.deltaY < 0 && frontIndex > 0) {
+        // Enter lock zone scrolling up onto last card
+        if (!locked && e.deltaY < 0 && front === CARDS_COUNT - 1 && isInDeckZone()) {
+          lockScroll();
           e.preventDefault();
-          scrollAccum += e.deltaY;
-          if (scrollAccum <= -SCROLL_THRESHOLD) {
-            scrollAccum = 0;
-            document.querySelector('.deck-prev').click();
-          }
+          triggerFlipPrev();
           return;
         }
 
-        // On last card scrolling down or first card scrolling up — let scroll through
-        scrollAccum = 0;
+        if (!locked) return;
+        e.preventDefault();
+
+        if (e.deltaY > 0) {
+          // Scrolling down
+          if (front < CARDS_COUNT - 1) {
+            triggerFlipNext();
+          } else {
+            // Already on last card — unlock
+            unlockScroll('down');
+          }
+        } else if (e.deltaY < 0) {
+          // Scrolling up
+          if (front > 0) {
+            triggerFlipPrev();
+          } else {
+            // Already on first card — unlock
+            unlockScroll('up');
+          }
+        }
       }, { passive: false });
+
+      // ── Re-engage lock when scrolling back into zone mid-deck ──
+      window.addEventListener('scroll', () => {
+        if (locked) return;
+        const front = getFrontIndex();
+        if (isInDeckZone() && front > 0 && front < CARDS_COUNT - 1) {
+          lockScroll();
+        }
+      });
+
+      // ── Touch / swipe ──
+      let touchStartY = 0;
+      const stage = document.querySelector('.deck-stage');
+      if (stage) {
+        stage.addEventListener('touchstart', e => {
+          touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        stage.addEventListener('touchend', e => {
+          const diff = touchStartY - e.changedTouches[0].clientY;
+          if (Math.abs(diff) > 50) {
+            if (diff > 0 && getFrontIndex() < CARDS_COUNT - 1) triggerFlipNext();
+            if (diff < 0 && getFrontIndex() > 0) triggerFlipPrev();
+          }
+        });
+      }
 
     })();
 
@@ -1270,16 +1334,6 @@
             window.open(card.dataset.href, '_blank');
           }
         });
-      });
-
-      // Buttons
-      document.querySelector('.deck-next').addEventListener('click', (e) => {
-        e.stopPropagation();
-        flipNext();
-      });
-      document.querySelector('.deck-prev').addEventListener('click', (e) => {
-        e.stopPropagation();
-        flipPrev();
       });
 
       // Keyboard navigation
