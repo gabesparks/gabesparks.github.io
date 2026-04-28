@@ -782,19 +782,15 @@
   </div>
 
   <!-- Work -->
-  <div id="work">
-    <div class="deck-scroll-container">
-      <div class="deck-sticky-viewport">
-        <div class="wrapper">
-          <p class="section-label reveal">Selected Work</p>
-          <h2 class="section-title reveal">Things I've built.</h2>
-          <p class="section-desc reveal">
-            A sourcing toolkit and two methodology guides built to show what's possible
-            when recruiters think like engineers.
-          </p>
-        </div>
-        <div class="deck-scene" id="deck-scene">
-          <div class="deck-stage-wrap">
+  <div class="wrapper" id="work">
+    <section>
+      <p class="section-label reveal">Selected Work</p>
+      <h2 class="section-title reveal">Things I've built.</h2>
+      <p class="section-desc reveal">
+        A sourcing toolkit and two methodology guides built to show what's possible
+        when recruiters think like engineers.
+      </p>
+      <div class="deck-scene reveal" id="deck-scene">
         <div class="deck-stage">
 
           <div class="deck-card" data-index="0" data-href="https://github.com/gabesparks/github-npm-sourcing-guide">
@@ -860,9 +856,8 @@
             <span class="deck-dot"></span>
             <span class="deck-dot"></span>
           </div>
-          <p class="deck-scroll-hint">Scroll to flip &darr;</p>
-        </div>
-      </div>
+        </div><!-- /deck-controls -->
+      </div><!-- /deck-scene -->
     </section>
   </div>
 
@@ -1033,105 +1028,6 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // ── 4. Card deck ──
-    (function() {
-      const cards = Array.from(document.querySelectorAll('.deck-card'));
-      const dots  = Array.from(document.querySelectorAll('.deck-dot'));
-      const total = cards.length;
-      let current = 0;
-      let animating = false;
-
-      function getOrder(frontIndex) {
-        return [
-          frontIndex,
-          (frontIndex + 1) % total,
-          (frontIndex + 2) % total,
-        ];
-      }
-
-      function applyStates(frontIndex) {
-        const [f, b1, b2] = getOrder(frontIndex);
-        cards[f].dataset.state  = 'front';
-        cards[b1].dataset.state = 'behind-1';
-        cards[b2].dataset.state = 'behind-2';
-        dots.forEach((d, i) => d.classList.toggle('active', i === frontIndex));
-      }
-
-      function flipNext() {
-        if (animating) return;
-        animating = true;
-        const [f, b1, b2] = getOrder(current);
-        cards[f].dataset.state = 'flying';
-        setTimeout(() => {
-          cards[b1].dataset.state = 'front';
-          cards[b2].dataset.state = 'behind-1';
-        }, 120);
-        setTimeout(() => { cards[f].dataset.state = 'returning'; }, 600);
-        setTimeout(() => {
-          cards[f].dataset.state = 'behind-2';
-          current = (current + 1) % total;
-          dots.forEach((d, i) => d.classList.toggle('active', i === current));
-          animating = false;
-        }, 750);
-      }
-
-      function flipPrev() {
-        if (animating) return;
-        animating = true;
-        const prev = (current - 1 + total) % total;
-        const [f, b1, b2] = getOrder(current);
-        cards[prev].dataset.state = 'returning';
-        setTimeout(() => {
-          cards[f].dataset.state  = 'behind-1';
-          cards[b1].dataset.state = 'behind-2';
-          cards[prev].dataset.state = 'front';
-          current = prev;
-          dots.forEach((d, i) => d.classList.toggle('active', i === current));
-          setTimeout(() => { animating = false; }, 700);
-        }, 50);
-      }
-
-      applyStates(0);
-
-      // Click front card to flip
-      cards.forEach(card => {
-        card.addEventListener('click', () => {
-          if (card.dataset.state === 'front') flipNext();
-        });
-      });
-
-      // Double-click to open repo
-      cards.forEach(card => {
-        card.addEventListener('dblclick', () => {
-          if (card.dataset.state === 'front') window.open(card.dataset.href, '_blank');
-        });
-      });
-
-      // Arrow buttons
-      const nextBtn = document.querySelector('.deck-next');
-      const prevBtn = document.querySelector('.deck-prev');
-      if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); flipNext(); });
-      if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); flipPrev(); });
-
-      // Keyboard
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') flipNext();
-        if (e.key === 'ArrowLeft')  flipPrev();
-      });
-
-      // Touch swipe
-      let touchStartX = 0;
-      const stage = document.querySelector('.deck-stage');
-      if (stage) {
-        stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-        stage.addEventListener('touchend', e => {
-          const diff = touchStartX - e.changedTouches[0].clientX;
-          if (Math.abs(diff) > 40) {
-            diff > 0 ? flipNext() : flipPrev();
-          }
-        });
-      }
-    })();
 
     // ── 2. Typewriter effect ──
     const lines = [
@@ -1296,6 +1192,12 @@
           }
         });
       });
+
+      // Buttons
+      const nextBtn = document.querySelector('.deck-next');
+      const prevBtn = document.querySelector('.deck-prev');
+      if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); flipNext(); });
+      if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); flipPrev(); });
 
       // Keyboard navigation
       document.addEventListener('keydown', (e) => {
