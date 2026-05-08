@@ -8,6 +8,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8WWVRHZPQ1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8WWVRHZPQ1');
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -828,8 +837,8 @@
     <div class="chat-header">
       <div class="chat-avatar">GS</div>
       <div class="chat-header-text">
-        <div class="chat-header-name">gabriel_sparks.ai</div>
-        <div class="chat-header-sub"><span class="status-dot"></span>ask me anything</div>
+        <div class="chat-header-name">neo // gabe's ai</div>
+        <div class="chat-header-sub"><span class="status-dot"></span>ai assistant · always on</div>
       </div>
       <span class="chat-header-tag">AI</span>
     </div>
@@ -852,10 +861,10 @@
     </div>
 
     <div class="suggestions" id="suggestions">
-      <button class="suggestion-btn" onclick="sendSuggestion(this)">background?</button>
-      <button class="suggestion-btn" onclick="sendSuggestion(this)">what do you build?</button>
-      <button class="suggestion-btn" onclick="sendSuggestion(this)">work together?</button>
-      <button class="suggestion-btn" onclick="sendSuggestion(this)">current focus?</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this)">Experience</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this)">Approach</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this)">AI in Recruiting</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this)">Interests</button>
     </div>
 
     <div class="chat-input-area">
@@ -959,13 +968,13 @@
     // ║  YOUR CONFIGURATION — edit these     ║
     // ╚══════════════════════════════════════╝
     const WORKER_URL = 'https://gabe-chat-proxy.gabrielcsparks.workers.dev';
-    const MAX_MESSAGES      = 30;   // questions per visitor per day
+    const MAX_MESSAGES      = 10;   // questions per visitor per day
     const MAX_HISTORY_TURNS = 6;    // turns sent per API call (controls costs)
     const STORAGE_KEY       = 'gs_chat_v1';
 
     const SYSTEM_PROMPT = [
-      "You are an AI assistant on Gabriel (Gabe) Sparks' personal portfolio website.",
-      "Your job is to represent Gabe accurately and confidently to visitors — whether they are recruiters, hiring leaders, founders, or peers.",
+      "You are Neo, an AI assistant on Gabriel (Gabe) Sparks' personal portfolio website.",
+      "Your name is Neo. Your job is to represent Gabe accurately and confidently to visitors — whether they are recruiters, hiring leaders, founders, or peers.",
       "",
       "== WHO GABE IS ==",
       "Gabe is a Senior Talent Operations Partner with 12+ years of recruiting experience, including 4+ years in crypto and Web3 at Exodus — a publicly traded, fully distributed company.",
@@ -1074,10 +1083,21 @@
       if (isOpen && !welcomeSent) {
         welcomeSent = true;
         updateLimitUI(getUsage().count);
-        setTimeout(() => addBotMessage("hey — i'm an AI trained on gabe's background. ask me about his work, projects, or how to get in touch."), 280);
+        setTimeout(() => {
+          addBotMessage("hey 👋 i'm Neo — Gabe's AI assistant. i know everything about his background, experience, and how he works.\n\nask me anything — what he's built, how he approaches recruiting, or whether he might be a fit for what you're working on. i'm here to help.");
+          // Track chat open event
+          if (typeof gtag !== 'undefined') gtag('event', 'chat_opened', {event_category: 'engagement'});
+        }, 280);
       }
       if (isOpen) setTimeout(() => document.getElementById('chat-input').focus(), 300);
     }
+
+    // Auto-open chat after a short delay when page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (!isOpen) toggleChat();
+      }, 2500);
+    });
 
     async function sendMessage(text) {
       const input = document.getElementById('chat-input');
@@ -1092,6 +1112,8 @@
       const newCount = incrementUsage();
       updateLimitUI(newCount);
       setTyping(true);
+      // Track message sent event
+      if (typeof gtag !== 'undefined') gtag('event', 'chat_message_sent', {event_category: 'engagement', event_label: userText.slice(0, 50)});
       const trimmed = conversationHistory.slice(-(MAX_HISTORY_TURNS * 2));
       try {
         const res = await fetch(WORKER_URL, {
@@ -1113,7 +1135,10 @@
       }
     }
 
-    function sendSuggestion(btn) { sendMessage(btn.textContent); }
+    function sendSuggestion(btn) {
+      if (typeof gtag !== 'undefined') gtag('event', 'suggestion_clicked', {event_category: 'engagement', event_label: btn.textContent});
+      sendMessage(btn.textContent);
+    }
 
     function addUserMessage(text) {
       const m = document.getElementById('chat-messages');
