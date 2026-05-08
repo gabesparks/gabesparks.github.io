@@ -39,7 +39,6 @@
       overflow-x: hidden;
     }
 
-    /* ── Grain overlay ── */
     body::before {
       content: '';
       position: fixed;
@@ -50,7 +49,6 @@
       opacity: 0.4;
     }
 
-    /* ── Grid lines ── */
     body::after {
       content: '';
       position: fixed;
@@ -64,7 +62,6 @@
       z-index: 0;
     }
 
-    /* ── Layout ── */
     .wrapper {
       position: relative;
       z-index: 1;
@@ -73,12 +70,9 @@
       padding: 0 2rem;
     }
 
-    /* ── Nav ── */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 100;
       background: rgba(12, 13, 15, 0.85);
       backdrop-filter: blur(12px);
@@ -118,7 +112,6 @@
 
     .nav-links a:hover { color: var(--text); }
 
-    /* ── Hero ── */
     .hero {
       padding: 140px 0 100px;
       border-bottom: 1px solid var(--border);
@@ -146,10 +139,7 @@
       animation: fadeUp 0.6s ease forwards 0.2s;
     }
 
-    .hero h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
 
     .hero-bio {
       font-size: 1.05rem;
@@ -208,7 +198,6 @@
       transform: translateY(-1px);
     }
 
-    /* ── Section ── */
     section {
       padding: 80px 0;
       border-bottom: 1px solid var(--border);
@@ -239,7 +228,6 @@
       line-height: 1.75;
     }
 
-    /* ── Project cards ── */
     .projects {
       display: grid;
       gap: 1px;
@@ -257,27 +245,22 @@
       transition: background 0.2s;
       position: relative;
       overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
     .project-card::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
+      left: 0; top: 0; bottom: 0;
       width: 2px;
       background: var(--accent);
       opacity: 0;
       transition: opacity 0.2s;
     }
 
-    .project-card:hover {
-      background: var(--bg-3);
-    }
-
-    .project-card:hover::before {
-      opacity: 1;
-    }
+    .project-card:hover { background: var(--bg-3); }
+    .project-card:hover::before { opacity: 1; }
 
     .project-header {
       display: flex;
@@ -313,11 +296,7 @@
       margin-bottom: 1.25rem;
     }
 
-    .project-tools {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
+    .project-tools { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
     .tool-pill {
       font-family: var(--mono);
@@ -331,8 +310,7 @@
 
     .project-arrow {
       position: absolute;
-      bottom: 2rem;
-      right: 2.25rem;
+      bottom: 2rem; right: 2.25rem;
       font-size: 0.75rem;
       color: var(--text-3);
       font-family: var(--mono);
@@ -341,12 +319,8 @@
       transition: all 0.2s;
     }
 
-    .project-card:hover .project-arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    .project-card:hover .project-arrow { opacity: 1; transform: translateX(0); }
 
-    /* ── Skills ── */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -357,10 +331,7 @@
       overflow: hidden;
     }
 
-    .skill-block {
-      background: var(--bg-2);
-      padding: 1.5rem;
-    }
+    .skill-block { background: var(--bg-2); padding: 1.5rem; }
 
     .skill-block-title {
       font-family: var(--mono);
@@ -371,30 +342,11 @@
       margin-bottom: 0.75rem;
     }
 
-    .skill-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
+    .skill-list { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+    .skill-list li { font-size: 0.85rem; color: var(--text-2); font-family: var(--mono); }
+    .skill-list li::before { content: '> '; color: var(--text-3); }
 
-    .skill-list li {
-      font-size: 0.85rem;
-      color: var(--text-2);
-      font-family: var(--mono);
-    }
-
-    .skill-list li::before {
-      content: '> ';
-      color: var(--text-3);
-    }
-
-    /* ── About ── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
 
     .about-text p {
       color: var(--text-2);
@@ -424,21 +376,9 @@
       align-items: center;
     }
 
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text-3);
-      letter-spacing: 0.05em;
-    }
+    .stat-label { font-family: var(--mono); font-size: 0.72rem; color: var(--text-3); letter-spacing: 0.05em; }
+    .stat-value { font-family: var(--mono); font-size: 0.85rem; color: var(--text); font-weight: 500; }
 
-    .stat-value {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    /* ── Footer ── */
     footer {
       padding: 3rem 0;
       display: flex;
@@ -448,304 +388,198 @@
       gap: 1rem;
     }
 
-    .footer-left {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text-3);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .footer-links a {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text-3);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
+    .footer-left { font-family: var(--mono); font-size: 0.72rem; color: var(--text-3); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-family: var(--mono); font-size: 0.72rem; color: var(--text-3); text-decoration: none; transition: color 0.2s; }
     .footer-links a:hover { color: var(--accent); }
 
-    /* ── Animations ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── Responsive ── */
     @media (max-width: 640px) {
       .about-grid { grid-template-columns: 1fr; }
       .hero { padding: 120px 0 70px; }
       .nav-links { display: none; }
     }
 
-    /* ── Card deck ── */
-    .deck-scene {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2.5rem;
-      padding: 2rem 0 1rem;
-    }
+    .deck-scene { display: flex; flex-direction: column; align-items: center; gap: 2.5rem; padding: 2rem 0 1rem; }
+    .deck-scroll-hint { font-family: var(--mono); font-size: 0.7rem; color: var(--text-3); text-align: center; margin-top: -1rem; letter-spacing: 0.08em; animation: hintFade 2s ease-in-out infinite; }
+    @keyframes hintFade { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-    .deck-scroll-hint {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--text-3);
-      text-align: center;
-      margin-top: -1rem;
-      letter-spacing: 0.08em;
-      animation: hintFade 2s ease-in-out infinite;
-    }
-
-    @keyframes hintFade {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
-    }
-
-    .deck-stage {
-      position: relative;
-      width: 100%;
-      max-width: 580px;
-      height: 420px;
-      perspective: 1200px;
-    }
+    .deck-stage { position: relative; width: 100%; max-width: 580px; height: 420px; perspective: 1200px; }
 
     .deck-card {
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      cursor: pointer;
+      position: absolute; inset: 0; border-radius: 16px; cursor: pointer;
       transform-origin: center bottom;
-      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity 0.5s ease,
-                  box-shadow 0.3s ease;
-      will-change: transform;
-      user-select: none;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease, box-shadow 0.3s ease;
+      will-change: transform; user-select: none;
     }
 
-    /* Stack offsets for cards behind */
-    .deck-card[data-state="behind-1"] {
-      transform: translateY(-10px) translateX(6px) scale(0.96) rotateZ(2deg);
-      opacity: 0.7;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .deck-card[data-state="behind-2"] {
-      transform: translateY(-18px) translateX(12px) scale(0.92) rotateZ(4deg);
-      opacity: 0.45;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .deck-card[data-state="front"] {
-      transform: translateY(0) translateX(0) scale(1) rotateZ(0deg);
-      opacity: 1;
-      z-index: 3;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--border-2);
-    }
-
-    .deck-card[data-state="flying"] {
-      transform: translateX(140%) translateY(-60px) rotateZ(20deg) scale(0.85);
-      opacity: 0;
-      z-index: 4;
-      pointer-events: none;
-    }
-
-    .deck-card[data-state="returning"] {
-      transform: translateY(-18px) translateX(12px) scale(0.92) rotateZ(4deg);
-      opacity: 0;
-      z-index: 0;
-      pointer-events: none;
-      transition: none;
-    }
+    .deck-card[data-state="behind-1"] { transform: translateY(-10px) translateX(6px) scale(0.96) rotateZ(2deg); opacity: 0.7; z-index: 1; pointer-events: none; }
+    .deck-card[data-state="behind-2"] { transform: translateY(-18px) translateX(12px) scale(0.92) rotateZ(4deg); opacity: 0.45; z-index: 0; pointer-events: none; }
+    .deck-card[data-state="front"] { transform: translateY(0) translateX(0) scale(1) rotateZ(0deg); opacity: 1; z-index: 3; box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--border-2); }
+    .deck-card[data-state="flying"] { transform: translateX(140%) translateY(-60px) rotateZ(20deg) scale(0.85); opacity: 0; z-index: 4; pointer-events: none; }
+    .deck-card[data-state="returning"] { transform: translateY(-18px) translateX(12px) scale(0.92) rotateZ(4deg); opacity: 0; z-index: 0; pointer-events: none; transition: none; }
 
     .deck-card-inner {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%; background: var(--bg-2); border: 1px solid var(--border-2);
+      border-radius: 16px; padding: 2.25rem 2.5rem; display: flex; flex-direction: column;
+      gap: 0.85rem; overflow: hidden; position: relative;
+    }
+
+    .deck-card-inner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); opacity: 0; transition: opacity 0.3s; }
+    .deck-card[data-state="front"] .deck-card-inner::before { opacity: 1; }
+
+    .deck-card-number { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.15em; }
+    .deck-card-tag { display: inline-block; font-family: var(--mono); font-size: 0.65rem; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(31, 122, 70, 0.25); padding: 0.2rem 0.6rem; border-radius: 3px; letter-spacing: 0.05em; width: fit-content; }
+    .deck-card-title { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; color: var(--text); margin: 0; }
+    .deck-card-desc { font-size: 0.875rem; color: var(--text-2); line-height: 1.7; flex: 1; }
+    .deck-card-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .deck-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+    .deck-card-hint { font-family: var(--mono); font-size: 0.7rem; color: var(--text-3); }
+    .deck-card-link { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); opacity: 0; transform: translateX(-4px); transition: opacity 0.2s, transform 0.2s; }
+    .deck-card[data-state="front"]:hover .deck-card-link { opacity: 1; transform: translateX(0); }
+    .deck-card[data-state="front"]:hover .deck-card-hint { opacity: 0; }
+
+    .deck-controls { display: flex; align-items: center; gap: 1.5rem; }
+    .deck-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-2); background: var(--bg-2); color: var(--text-2); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .deck-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+    .deck-dots { display: flex; gap: 0.5rem; }
+    .deck-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-2); transition: background 0.3s, transform 0.3s; }
+    .deck-dot.active { background: var(--accent); transform: scale(1.3); }
+
+    .cursor { display: inline-block; color: var(--accent); animation: blink 0.9s step-end infinite; margin-left: 1px; font-weight: 300; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .stat-value.counting { color: var(--accent); transition: color 0.3s; }
+
+    /* ═══════════════════════════════════════════
+       CHAT WIDGET — matches site design system
+    ═══════════════════════════════════════════ */
+
+    #chat-launcher {
+      position: fixed; bottom: 28px; right: 28px; z-index: 200;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--accent); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(31,122,70,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s;
+    }
+    #chat-launcher:hover {
+      background: #2a9457;
+      transform: scale(1.06);
+      box-shadow: 0 6px 28px rgba(31,122,70,0.55);
+    }
+    #chat-launcher .icon-chat { transition: opacity 0.15s; }
+    #chat-launcher .icon-close { opacity: 0; position: absolute; transition: opacity 0.15s; }
+    #chat-launcher.open .icon-chat { opacity: 0; }
+    #chat-launcher.open .icon-close { opacity: 1; }
+
+    #chat-window {
+      position: fixed; bottom: 92px; right: 28px; z-index: 199;
+      width: 370px; max-height: 580px;
       background: var(--bg-2);
       border: 1px solid var(--border-2);
-      border-radius: 16px;
-      padding: 2.25rem 2.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      overflow: hidden;
-      position: relative;
+      border-radius: 12px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(31,122,70,0.1);
+      transform: translateY(10px) scale(0.97);
+      opacity: 0; pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), opacity 0.2s ease;
     }
+    #chat-window.visible { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
 
-    .deck-card-inner::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
+    .chat-header {
+      padding: 16px 18px 13px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 11px;
+      flex-shrink: 0;
     }
-
-    .deck-card[data-state="front"] .deck-card-inner::before {
-      opacity: 1;
-    }
-
-    .deck-card-number {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-    }
-
-    .deck-card-tag {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--accent);
-      background: var(--accent-dim);
-      border: 1px solid rgba(31, 122, 70, 0.25);
-      padding: 0.2rem 0.6rem;
-      border-radius: 3px;
-      letter-spacing: 0.05em;
-      width: fit-content;
-    }
-
-    .deck-card-title {
-      font-family: var(--serif);
-      font-size: 1.6rem;
-      line-height: 1.2;
-      color: var(--text);
-      margin: 0;
-    }
-
-    .deck-card-desc {
-      font-size: 0.875rem;
-      color: var(--text-2);
-      line-height: 1.7;
-      flex: 1;
-    }
-
-    .deck-card-pills {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-    }
-
-    .deck-card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: auto;
-      padding-top: 0.5rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .deck-card-hint {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--text-3);
-    }
-
-    .deck-card-link {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--accent);
-      opacity: 0;
-      transform: translateX(-4px);
-      transition: opacity 0.2s, transform 0.2s;
-    }
-
-    .deck-card[data-state="front"]:hover .deck-card-link {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    .deck-card[data-state="front"]:hover .deck-card-hint {
-      opacity: 0;
-    }
-
-    /* Controls */
-    .deck-controls {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .deck-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid var(--border-2);
-      background: var(--bg-2);
-      color: var(--text-2);
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .deck-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-dim);
-    }
-
-    .deck-dots {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .deck-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--border-2);
-      transition: background 0.3s, transform 0.3s;
-    }
-
-    .deck-dot.active {
+    .chat-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
       background: var(--accent);
-      transform: scale(1.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      color: #0a1a10; flex-shrink: 0; letter-spacing: 0.05em;
     }
+    .chat-header-text { flex: 1; }
+    .chat-header-name { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--text); letter-spacing: 0.04em; }
+    .chat-header-sub { font-size: 11px; color: var(--text-3); font-family: var(--mono); display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .chat-header-tag { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(31,122,70,0.25); padding: 3px 8px; border-radius: 3px; }
 
-    /* ── Typewriter cursor ── */
-    .cursor {
-      display: inline-block;
-      color: var(--accent);
-      animation: blink 0.9s step-end infinite;
-      margin-left: 1px;
-      font-weight: 300;
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 16px 14px;
+      display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth;
     }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
+    .chat-messages::-webkit-scrollbar { width: 3px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
 
-    /* ── 3D card tilt ── */
-    .project-card {
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
+    .msg { display: flex; animation: msgIn 0.2s ease; }
+    @keyframes msgIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+    .msg.user { justify-content: flex-end; }
 
-    /* ── Count-up highlight ── */
-    .stat-value.counting {
-      color: var(--accent);
-      transition: color 0.3s;
+    .msg-bubble {
+      max-width: 80%; padding: 9px 13px; border-radius: 10px;
+      font-size: 13px; line-height: 1.6; font-family: var(--sans); font-weight: 300;
+    }
+    .msg.bot .msg-bubble { background: var(--bg-3); border: 1px solid var(--border); color: var(--text-2); border-bottom-left-radius: 3px; }
+    .msg.user .msg-bubble { background: var(--accent); color: #0a1a10; font-weight: 400; border-bottom-right-radius: 3px; }
+
+    .typing-bubble { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; border-bottom-left-radius: 3px; padding: 11px 14px; display: flex; gap: 5px; align-items: center; }
+    .typing-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-3); animation: typingDot 1.2s ease-in-out infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.18s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes typingDot { 0%,60%,100%{opacity:.3;transform:translateY(0)} 30%{opacity:1;transform:translateY(-3px)} }
+
+    .limit-bar { display: flex; align-items: center; gap: 10px; padding: 8px 14px 2px; flex-shrink: 0; }
+    .limit-track { flex: 1; height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
+    .limit-fill { height: 100%; background: var(--accent); border-radius: 1px; transition: width 0.3s ease, background 0.3s ease; }
+    .limit-fill.warn  { background: #a06020; }
+    .limit-fill.spent { background: #7a2020; }
+    .limit-label { font-family: var(--mono); font-size: 10px; color: var(--text-3); white-space: nowrap; letter-spacing: 0.04em; }
+
+    .limit-wall { margin: 8px 14px 4px; padding: 11px 13px; background: rgba(122,32,32,0.1); border: 1px solid rgba(122,32,32,0.2); border-radius: 6px; font-family: var(--mono); font-size: 11px; line-height: 1.6; color: var(--text-3); text-align: center; }
+    .limit-wall a { color: var(--accent); text-decoration: none; }
+
+    .suggestions { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 14px 10px; flex-shrink: 0; }
+    .suggestion-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(31,122,70,0.2); border-radius: 3px; padding: 4px 10px; cursor: pointer; transition: all 0.15s; }
+    .suggestion-btn:hover { background: rgba(31,122,70,0.15); border-color: rgba(31,122,70,0.4); }
+
+    .chat-input-area { padding: 8px 12px 14px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0; transition: opacity 0.2s; }
+    .chat-input-area.input-locked { opacity: 0.3; pointer-events: none; }
+
+    #chat-input {
+      flex: 1; background: var(--bg-3); border: 1px solid var(--border); border-radius: 6px;
+      padding: 8px 12px; font-family: var(--mono); font-size: 12.5px; font-weight: 300;
+      color: var(--text); resize: none; max-height: 90px; line-height: 1.5;
+      outline: none; transition: border-color 0.15s; letter-spacing: 0.02em;
+    }
+    #chat-input::placeholder { color: var(--text-3); }
+    #chat-input:focus { border-color: rgba(31,122,70,0.4); }
+
+    #chat-send {
+      width: 34px; height: 34px; border-radius: 6px; background: var(--accent); border: none;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background 0.15s, transform 0.1s;
+    }
+    #chat-send:hover { background: #2a9457; }
+    #chat-send:active { transform: scale(0.93); }
+    #chat-send:disabled { background: var(--border-2); cursor: not-allowed; }
+
+    .api-notice { margin: 10px 14px 0; padding: 8px 11px; background: var(--accent-dim); border: 1px solid rgba(31,122,70,0.2); border-radius: 6px; font-family: var(--mono); font-size: 10.5px; line-height: 1.55; color: var(--text-3); flex-shrink: 0; }
+    .api-notice a { color: var(--accent); text-decoration: none; }
+    .api-notice code { background: var(--bg); padding: 1px 4px; border-radius: 3px; font-size: 10px; }
+
+    @media (max-width: 440px) {
+      #chat-window { right: 12px; left: 12px; width: auto; bottom: 84px; }
+      #chat-launcher { right: 16px; bottom: 16px; }
     }
   </style>
 </head>
@@ -855,8 +689,8 @@
             <span class="deck-dot"></span>
           </div>
           <button class="deck-btn deck-next" aria-label="Next">&#8594;</button>
-        </div><!-- /deck-controls -->
-      </div><!-- /deck-scene -->
+        </div>
+      </div>
     </section>
   </div>
 
@@ -868,15 +702,9 @@
 
       <div class="about-grid reveal">
         <div class="about-text">
-          <p>
-            I got into recruiting to help companies find great people and help people find meaningful work. That impact still drives me. Over time, I saw the same patterns. Inconsistent processes, missed signals, and hiring decisions that didn't reflect the full picture.
-          </p>
-          <p>
-            That led me into the operational side of hiring. I design and build systems that help teams hire better, enabling recruiters and hiring managers to find and close the right talent while creating a consistent experience. I think about TA as a system, not a function. My focus is how to make hiring more predictable, scalable, and consistent across teams.
-          </p>
-          <p>
-            I'm especially interested in how technologies like AI can improve how we evaluate talent and make decisions. Not by replacing people, but by giving teams better signals and more confidence. The goal is simple. Better outcomes and systems that evolve with the teams they support.
-          </p>
+          <p>I got into recruiting to help companies find great people and help people find meaningful work. That impact still drives me. Over time, I saw the same patterns. Inconsistent processes, missed signals, and hiring decisions that didn't reflect the full picture.</p>
+          <p>That led me into the operational side of hiring. I design and build systems that help teams hire better, enabling recruiters and hiring managers to find and close the right talent while creating a consistent experience. I think about TA as a system, not a function. My focus is how to make hiring more predictable, scalable, and consistent across teams.</p>
+          <p>I'm especially interested in how technologies like AI can improve how we evaluate talent and make decisions. Not by replacing people, but by giving teams better signals and more confidence. The goal is simple. Better outcomes and systems that evolve with the teams they support.</p>
         </div>
 
         <div class="about-stats">
@@ -919,60 +747,37 @@
         <div class="skill-block">
           <p class="skill-block-title">Development</p>
           <ul class="skill-list">
-            <li>Node.js</li>
-            <li>JavaScript</li>
-            <li>GitHub API</li>
-            <li>Google Apps Script</li>
-            <li>REST APIs</li>
+            <li>Node.js</li><li>JavaScript</li><li>GitHub API</li><li>Google Apps Script</li><li>REST APIs</li>
           </ul>
         </div>
         <div class="skill-block">
           <p class="skill-block-title">People Tech</p>
           <ul class="skill-list">
-            <li>Greenhouse ATS</li>
-            <li>Slack Automation</li>
-            <li>Sourcing Tooling</li>
-            <li>Workflow Design</li>
-            <li>Claude AI / LLMs</li>
+            <li>Greenhouse ATS</li><li>Slack Automation</li><li>Sourcing Tooling</li><li>Workflow Design</li><li>Claude AI / LLMs</li>
           </ul>
         </div>
         <div class="skill-block">
           <p class="skill-block-title">Sourcing</p>
           <ul class="skill-list">
-            <li>GitHub Sourcing</li>
-            <li>Twitter/X Sourcing</li>
-            <li>Technical Recruiting</li>
-            <li>Web3 / Crypto Hiring</li>
-            <li>Boolean Search</li>
+            <li>GitHub Sourcing</li><li>Twitter/X Sourcing</li><li>Technical Recruiting</li><li>Web3 / Crypto Hiring</li><li>Boolean Search</li>
           </ul>
         </div>
         <div class="skill-block">
           <p class="skill-block-title">Currently learning</p>
           <ul class="skill-list">
-            <li>CLI Tool Design</li>
-            <li>API Design Patterns</li>
-            <li>Data Pipelines</li>
-            <li>AI-assisted Hiring</li>
+            <li>CLI Tool Design</li><li>API Design Patterns</li><li>Data Pipelines</li><li>AI-assisted Hiring</li>
           </ul>
         </div>
         <div class="skill-block">
           <p class="skill-block-title">Recruiting Tech</p>
           <ul class="skill-list">
-            <li>Greenhouse</li>
-            <li>Workable</li>
-            <li>Guide</li>
-            <li>Metaview</li>
-            <li>LinkedIn Talent Insights</li>
+            <li>Greenhouse</li><li>Workable</li><li>Guide</li><li>Metaview</li><li>LinkedIn Talent Insights</li>
           </ul>
         </div>
         <div class="skill-block">
           <p class="skill-block-title">Data & Analytics</p>
           <ul class="skill-list">
-            <li>Pipeline Analytics</li>
-            <li>Funnel Metrics</li>
-            <li>Conversion Rates</li>
-            <li>Reporting & Dashboards</li>
-            <li>Data Integrity</li>
+            <li>Pipeline Analytics</li><li>Funnel Metrics</li><li>Conversion Rates</li><li>Reporting & Dashboards</li><li>Data Integrity</li>
           </ul>
         </div>
       </div>
@@ -1005,79 +810,107 @@
     </footer>
   </div>
 
+  <!-- ═══════════════════════════════════════════
+       CHAT WIDGET
+  ═══════════════════════════════════════════ -->
+
+  <button id="chat-launcher" aria-label="Open chat" onclick="toggleChat()">
+    <svg class="icon-chat" width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#0a1a10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <svg class="icon-close" width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <path d="M18 6L6 18M6 6l12 12" stroke="#0a1a10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <div id="chat-window" role="dialog" aria-label="Chat with Gabe">
+
+    <div class="chat-header">
+      <div class="chat-avatar">GS</div>
+      <div class="chat-header-text">
+        <div class="chat-header-name">gabriel_sparks.ai</div>
+        <div class="chat-header-sub"><span class="status-dot"></span>ask me anything</div>
+      </div>
+      <span class="chat-header-tag">AI</span>
+    </div>
+
+    <div class="api-notice" id="api-notice">
+      🔑 Paste your <a href="https://console.anthropic.com/settings/keys" target="_blank">Anthropic API key</a>
+      into <code>PASTE_YOUR_API_KEY_HERE</code> in the script below to activate.
+    </div>
+
+    <div class="chat-messages" id="chat-messages"></div>
+
+    <div class="limit-bar" id="limit-bar">
+      <div class="limit-track"><div class="limit-fill" id="limit-fill" style="width:100%"></div></div>
+      <span class="limit-label" id="limit-label">10 left today</span>
+    </div>
+
+    <div class="limit-wall" id="limit-wall" style="display:none">
+      you've hit the daily limit.<br>
+      <a href="https://www.linkedin.com/in/sparks-gabriel/" target="_blank">connect on linkedin →</a>
+    </div>
+
+    <div class="suggestions" id="suggestions">
+      <button class="suggestion-btn" onclick="sendSuggestion(this)">background?</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this)">what do you build?</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this)">work together?</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this)">current focus?</button>
+    </div>
+
+    <div class="chat-input-area">
+      <textarea id="chat-input" rows="1" placeholder="ask gabe anything..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button id="chat-send" onclick="sendMessage()" aria-label="Send">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+          <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" stroke="#0a1a10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
   <script>
     // ── 1. Scroll reveal ──
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-
-    // ── 2. Typewriter effect ──
-    const lines = [
-      'Senior Talent Partner',
-      'Building recruiting infrastructure.',
-      '4 CLI tools. 0 dependencies.',
-      'Sourcing smarter, not harder.',
-      'Open to new opportunities.',
-    ];
-    const el = document.getElementById('typewriter');
+    // ── 2. Typewriter ──
+    const lines = ['Senior Talent Partner','Building recruiting infrastructure.','4 CLI tools. 0 dependencies.','Sourcing smarter, not harder.','Open to new opportunities.'];
+    const twEl = document.getElementById('typewriter');
     let lineIndex = 0, charIndex = 0, deleting = false;
-
     function type() {
       const current = lines[lineIndex];
       if (!deleting) {
-        el.textContent = current.slice(0, ++charIndex);
-        if (charIndex === current.length) {
-          deleting = true;
-          setTimeout(type, 1800);
-          return;
-        }
+        twEl.textContent = current.slice(0, ++charIndex);
+        if (charIndex === current.length) { deleting = true; setTimeout(type, 1800); return; }
         setTimeout(type, 55);
       } else {
-        el.textContent = current.slice(0, --charIndex);
-        if (charIndex === 0) {
-          deleting = false;
-          lineIndex = (lineIndex + 1) % lines.length;
-          setTimeout(type, 400);
-          return;
-        }
+        twEl.textContent = current.slice(0, --charIndex);
+        if (charIndex === 0) { deleting = false; lineIndex = (lineIndex + 1) % lines.length; setTimeout(type, 400); return; }
         setTimeout(type, 28);
       }
     }
     setTimeout(type, 600);
 
-    // ── 3. Count-up animation ──
+    // ── 3. Count-up ──
     function countUp(el, target, duration) {
       const start = performance.now();
       el.classList.add('counting');
       function update(now) {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.round(eased * target);
-        if (progress < 1) {
-          requestAnimationFrame(update);
-        } else {
-          el.textContent = target;
-          el.classList.remove('counting');
-        }
+        const p = Math.min((now - start) / duration, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(e * target);
+        if (p < 1) requestAnimationFrame(update);
+        else { el.textContent = target; el.classList.remove('counting'); }
       }
       requestAnimationFrame(update);
     }
-
     const countObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const target = parseInt(entry.target.dataset.count);
-          countUp(entry.target, target, 1200);
-          countObserver.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { countUp(entry.target, parseInt(entry.target.dataset.count), 1200); countObserver.unobserve(entry.target); }
       });
     }, { threshold: 0.5 });
     document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
@@ -1087,113 +920,188 @@
       const cards = Array.from(document.querySelectorAll('.deck-card'));
       const dots  = Array.from(document.querySelectorAll('.deck-dot'));
       const total = cards.length;
-      let current = 0;
-      let animating = false;
-
-      // order: front, behind-1, behind-2
-      function getOrder(frontIndex) {
-        return [
-          frontIndex,
-          (frontIndex + 1) % total,
-          (frontIndex + 2) % total,
-        ];
+      let current = 0, animating = false;
+      function getOrder(i) { return [i, (i+1)%total, (i+2)%total]; }
+      function applyStates(i) {
+        const [f,b1,b2] = getOrder(i);
+        cards[f].dataset.state='front'; cards[b1].dataset.state='behind-1'; cards[b2].dataset.state='behind-2';
+        dots.forEach((d,j) => d.classList.toggle('active', j===i));
       }
-
-      function applyStates(frontIndex) {
-        const [f, b1, b2] = getOrder(frontIndex);
-        cards[f].dataset.state  = 'front';
-        cards[b1].dataset.state = 'behind-1';
-        cards[b2].dataset.state = 'behind-2';
-        dots.forEach((d, i) => d.classList.toggle('active', i === frontIndex));
-      }
-
       function flipNext() {
-        if (animating) return;
-        animating = true;
-
-        const [f, b1, b2] = getOrder(current);
-
-        // 1. Fly current front card off to the right
+        if (animating) return; animating = true;
+        const [f,b1,b2] = getOrder(current);
         cards[f].dataset.state = 'flying';
-
-        // 2. Shift the stack forward while front is flying
-        setTimeout(() => {
-          cards[b1].dataset.state = 'front';
-          cards[b2].dataset.state = 'behind-1';
-        }, 120);
-
-        // 3. After fly-out, instantly snap the old front to back position (no transition)
-        setTimeout(() => {
-          cards[f].dataset.state = 'returning';
-        }, 600);
-
-        // 4. Fade it back in as the new back card
-        setTimeout(() => {
-          cards[f].dataset.state = 'behind-2';
-          current = (current + 1) % total;
-          dots.forEach((d, i) => d.classList.toggle('active', i === current));
-          animating = false;
-        }, 750);
+        setTimeout(() => { cards[b1].dataset.state='front'; cards[b2].dataset.state='behind-1'; }, 120);
+        setTimeout(() => { cards[f].dataset.state='returning'; }, 600);
+        setTimeout(() => { cards[f].dataset.state='behind-2'; current=(current+1)%total; dots.forEach((d,i)=>d.classList.toggle('active',i===current)); animating=false; }, 750);
       }
-
       function flipPrev() {
-        if (animating) return;
-        animating = true;
-
-        const prev = (current - 1 + total) % total;
-        const [f, b1, b2] = getOrder(current);
-
-        // Snap prev card behind (no transition), then slide it to front
-        cards[prev].dataset.state = 'returning';
-
-        setTimeout(() => {
-          // Shift current stack back
-          cards[f].dataset.state  = 'behind-1';
-          cards[b1].dataset.state = 'behind-2';
-          // Bring prev to front
-          cards[prev].dataset.state = 'front';
-          current = prev;
-          dots.forEach((d, i) => d.classList.toggle('active', i === current));
-
-          setTimeout(() => { animating = false; }, 700);
-        }, 50);
+        if (animating) return; animating = true;
+        const prev=(current-1+total)%total;
+        const [f,b1,b2]=getOrder(current);
+        cards[prev].dataset.state='returning';
+        setTimeout(()=>{ cards[f].dataset.state='behind-1'; cards[b1].dataset.state='behind-2'; cards[prev].dataset.state='front'; current=prev; dots.forEach((d,i)=>d.classList.toggle('active',i===current)); setTimeout(()=>{animating=false;},700); },50);
       }
-
-      // Init
       applyStates(0);
-
-      // Single click front card — open repo in new tab
-      cards.forEach(card => {
-        card.addEventListener('click', (e) => {
-          if (card.dataset.state === 'front') {
-            window.open(card.dataset.href, '_blank');
-          }
-        });
-      });
-
-      // Buttons
-      const nextBtn = document.querySelector('.deck-next');
-      const prevBtn = document.querySelector('.deck-prev');
-      if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); flipNext(); });
-      if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); flipPrev(); });
-
-      // Keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') flipNext();
-        if (e.key === 'ArrowLeft')  flipPrev();
-      });
-
-      // Touch/swipe support
-      let touchStartX = 0;
+      cards.forEach(card => { card.addEventListener('click',()=>{ if(card.dataset.state==='front') window.open(card.dataset.href,'_blank'); }); });
+      document.querySelector('.deck-next').addEventListener('click', e=>{e.stopPropagation();flipNext();});
+      document.querySelector('.deck-prev').addEventListener('click', e=>{e.stopPropagation();flipPrev();});
+      document.addEventListener('keydown', e=>{if(e.key==='ArrowRight')flipNext();if(e.key==='ArrowLeft')flipPrev();});
       const stage = document.querySelector('.deck-stage');
-      stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-      stage.addEventListener('touchend', e => {
-        const diff = touchStartX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 40) {
-          diff > 0 ? flipNext() : flipPrev();
-        }
-      });
+      let touchStartX=0;
+      stage.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;},{passive:true});
+      stage.addEventListener('touchend',e=>{const d=touchStartX-e.changedTouches[0].clientX;if(Math.abs(d)>40){d>0?flipNext():flipPrev();}});
     })();
+
+    // ── 5. CHAT WIDGET ──────────────────────────────────────
+
+    // ╔══════════════════════════════════════╗
+    // ║  YOUR CONFIGURATION — edit these     ║
+    // ╚══════════════════════════════════════╝
+    const WORKER_URL = 'https://gabe-chat-proxy.gabrielcsparks.workers.dev';
+    const MAX_MESSAGES      = 10;   // questions per visitor per day
+    const MAX_HISTORY_TURNS = 6;    // turns sent per API call (controls costs)
+    const STORAGE_KEY       = 'gs_chat_v1';
+
+    const SYSTEM_PROMPT = [
+      "You are an AI assistant on Gabriel (Gabe) Sparks' personal portfolio website.",
+      "Gabe is a Senior Talent Partner specialising in recruiting infrastructure, people tech, and automation.",
+      "",
+      "Key facts about Gabe:",
+      "- Role: Senior Talent Partner",
+      "- Focus: Building scalable hiring systems, sourcing tooling, and AI-assisted recruiting",
+      "- Stack: Node.js, JavaScript, GitHub API, Google Apps Script, REST APIs",
+      "- Built: 4 open-source CLI tools with zero external dependencies",
+      "- Projects: GitHub & NPM Sourcing Toolkit, GitHub Sourcing Playbook, Twitter/X Sourcing Playbook",
+      "- Recruiting tech: Greenhouse, Workable, Guide, Metaview, LinkedIn Talent Insights",
+      "- Specialties: Technical sourcing, Web3/crypto hiring, workflow design, pipeline analytics",
+      "- GitHub: gabesparks | LinkedIn: linkedin.com/in/sparks-gabriel",
+      "- Open to new opportunities",
+      "",
+      "Tone: concise, direct, confident — like a sharp recruiter who also writes code.",
+      "Keep replies to 2-4 sentences unless a detailed answer is clearly needed.",
+      "If asked something not covered above, be honest and suggest they connect on LinkedIn.",
+      "Never fabricate details. Stay in character as Gabe's assistant at all times."
+    ].join("\n");
+
+    // State
+    let conversationHistory = [];
+    let isOpen = false, isTyping = false, welcomeSent = false;
+
+    // Rate limiting
+    function today() { return new Date().toISOString().slice(0,10); }
+    function getUsage() {
+      try {
+        const r = localStorage.getItem(STORAGE_KEY);
+        if (!r) return {count:0, date:today()};
+        const d = JSON.parse(r);
+        return d.date !== today() ? {count:0, date:today()} : d;
+      } catch { return {count:0, date:today()}; }
+    }
+    function incrementUsage() {
+      const u = getUsage(); u.count++;
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(u)); } catch {}
+      return u.count;
+    }
+    function updateLimitUI(used) {
+      const remaining = Math.max(0, MAX_MESSAGES - used);
+      const pct = (remaining / MAX_MESSAGES) * 100;
+      const fill  = document.getElementById('limit-fill');
+      const label = document.getElementById('limit-label');
+      const wall  = document.getElementById('limit-wall');
+      const bar   = document.getElementById('limit-bar');
+      const area  = document.querySelector('.chat-input-area');
+      fill.style.width = pct + '%';
+      fill.className = 'limit-fill' + (pct<=20?' spent':pct<=50?' warn':'');
+      if (remaining === 0) {
+        label.textContent = 'limit reached';
+        wall.style.display = 'block'; bar.style.display = 'none';
+        area.classList.add('input-locked');
+        document.getElementById('suggestions').style.display = 'none';
+      } else {
+        label.textContent = remaining + ' left today';
+        wall.style.display = 'none'; bar.style.display = 'flex';
+        area.classList.remove('input-locked');
+      }
+    }
+
+    function toggleChat() {
+      isOpen = !isOpen;
+      document.getElementById('chat-window').classList.toggle('visible', isOpen);
+      document.getElementById('chat-launcher').classList.toggle('open', isOpen);
+      if (isOpen && !welcomeSent) {
+        welcomeSent = true;
+        updateLimitUI(getUsage().count);
+        setTimeout(() => addBotMessage("hey — i'm an AI trained on gabe's background. ask me about his work, projects, or how to get in touch."), 280);
+      }
+      if (isOpen) setTimeout(() => document.getElementById('chat-input').focus(), 300);
+    }
+
+    async function sendMessage(text) {
+      const input = document.getElementById('chat-input');
+      const userText = (text || input.value).trim();
+      if (!userText || isTyping) return;
+      const usage = getUsage();
+      if (usage.count >= MAX_MESSAGES) { updateLimitUI(usage.count); return; }
+      input.value = ''; input.style.height = 'auto';
+      document.getElementById('suggestions').style.display = 'none';
+      addUserMessage(userText);
+      conversationHistory.push({role:'user', content:userText});
+      const newCount = incrementUsage();
+      updateLimitUI(newCount);
+      setTyping(true);
+      const trimmed = conversationHistory.slice(-(MAX_HISTORY_TURNS * 2));
+      try {
+        const res = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:400, system:SYSTEM_PROMPT, messages:trimmed})
+        });
+        const data = await res.json();
+        setTyping(false);
+        if (data.error) { addBotMessage("connection error — check the api key is set."); return; }
+        const reply = data.content[0].text;
+        conversationHistory.push({role:'assistant', content:reply});
+        addBotMessage(reply);
+      } catch(err) {
+        setTyping(false);
+        addBotMessage("couldn't connect. try again in a moment.");
+      }
+    }
+
+    function sendSuggestion(btn) { sendMessage(btn.textContent); }
+
+    function addUserMessage(text) {
+      const m = document.getElementById('chat-messages');
+      const d = document.createElement('div'); d.className = 'msg user';
+      d.innerHTML = '<div class="msg-bubble">' + escHtml(text) + '</div>';
+      m.appendChild(d); scrollBottom();
+    }
+    function addBotMessage(text) {
+      const m = document.getElementById('chat-messages');
+      const d = document.createElement('div'); d.className = 'msg bot';
+      d.innerHTML = '<div class="msg-bubble">' + escHtml(text) + '</div>';
+      m.appendChild(d); scrollBottom();
+    }
+    function setTyping(on) {
+      isTyping = on;
+      document.getElementById('chat-send').disabled = on;
+      const ex = document.getElementById('typing-indicator');
+      if (on && !ex) {
+        const m = document.getElementById('chat-messages');
+        const d = document.createElement('div'); d.className='msg bot'; d.id='typing-indicator';
+        d.innerHTML='<div class="typing-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+        m.appendChild(d); scrollBottom();
+      } else if (!on && ex) { ex.remove(); }
+    }
+    function scrollBottom() { const m=document.getElementById('chat-messages'); m.scrollTop=m.scrollHeight; }
+    function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+    function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,90)+'px'; }
+    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+    document.getElementById('api-notice').style.display = 'none';
   </script>
 
 </body>
