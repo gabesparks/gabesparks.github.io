@@ -1099,7 +1099,7 @@
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:400, system:SYSTEM_PROMPT, messages:trimmed})
+          body: JSON.stringify({model:'claude-sonnet-4-5', max_tokens:400, system:SYSTEM_PROMPT, messages:trimmed})
         });
         const data = await res.json();
         setTyping(false);
