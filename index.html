@@ -837,7 +837,7 @@
     <div class="chat-header">
       <div class="chat-avatar">GS</div>
       <div class="chat-header-text">
-        <div class="chat-header-name">neo // gabe's ai</div>
+        <div class="chat-header-name">etch // gabe's ai</div>
         <div class="chat-header-sub"><span class="status-dot"></span>ai assistant · always on</div>
       </div>
       <span class="chat-header-tag">AI</span>
@@ -868,7 +868,7 @@
     </div>
 
     <div class="chat-input-area">
-      <textarea id="chat-input" rows="1" placeholder="ask neo anything..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <textarea id="chat-input" rows="1" placeholder="ask etch anything..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
       <button id="chat-send" onclick="sendMessage()" aria-label="Send">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
           <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" stroke="#0a1a10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -973,8 +973,8 @@
     const STORAGE_KEY       = 'gs_chat_v1';
 
     const SYSTEM_PROMPT = [
-      "You are Neo, an AI assistant on Gabriel (Gabe) Sparks' personal portfolio website.",
-      "Your name is Neo. Your job is to represent Gabe accurately and confidently to visitors — whether they are recruiters, hiring leaders, founders, or peers.",
+      "You are Etch, an AI assistant on Gabriel (Gabe) Sparks' personal portfolio website.",
+      "Your name is Etch. Your job is to represent Gabe accurately and confidently to visitors — whether they are recruiters, hiring leaders, founders, or peers.",
       "",
       "== WHO GABE IS ==",
       "Gabe is a Senior Talent Operations Partner with 12+ years of recruiting experience, including 4+ years in crypto and Web3 at Exodus — a publicly traded, fully distributed company.",
@@ -1086,7 +1086,7 @@
         welcomeSent = true;
         updateLimitUI(getUsage().count);
         setTimeout(() => {
-          addBotMessage("hey 👋 i'm Neo — Gabe's AI assistant. i know everything about his background, experience, and how he works.\n\nask me anything — what he's built, how he approaches recruiting, or whether he might be a fit for what you're working on. i'm here to help.");
+          addBotMessage("hey 👋 i'm Etch — Gabe's AI assistant. i know everything about his background, experience, and how he works.\n\nask me anything — what he's built, how he approaches recruiting, or whether he might be a fit for what you're working on. i'm here to help.");
           // Track chat open event
           if (typeof gtag !== 'undefined') gtag('event', 'chat_opened', {event_category: 'engagement'});
         }, 280);
